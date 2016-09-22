@@ -117,7 +117,7 @@ void setup()
   digitalWrite(ARDUINO_LED, LOW);
   
   ledMatrix = new LedMatrix();
-  /*byte heart[8] = 
+  byte heart[8] = 
   {
     B00100100,
     B01011010,
@@ -128,62 +128,10 @@ void setup()
     B00000000,  
     B00000000,  
   };
-  ledMatrix->loadImage(heart);*/
+  ledMatrix->loadImage(heart);
 }
 
 void loop() 
 {
-  static unsigned long tTime = 0;
-  unsigned long dTime = 0;
-  static const unsigned long TICK = 200;
-  static unsigned int switcher = 0;
-  dTime = millis() - tTime;
-  if (dTime >= TICK)
-  {
-    switch(switcher)
-    {
-      case 0:
-        ledMatrix->ledOff(1,1);
-        ledMatrix->ledOff(2,2);
-        ledMatrix->ledOff(3,3);
-        ledMatrix->ledOff(4,4);
-        ledMatrix->ledOff(5,5);
-        ledMatrix->ledOff(6,6);
-        ledMatrix->ledOff(7,7);
-        ledMatrix->ledOff(8,8);
-        ledMatrix->ledOn(1,1);
-        switcher = 1;
-        break;
-      case 1:
-        ledMatrix->ledOn(2,2);
-        switcher = 2;
-        break;
-      case 2:
-        ledMatrix->ledOn(3,3);
-        switcher = 3;
-        break;
-      case 3:
-        ledMatrix->ledOn(4,4);
-        switcher = 4;
-        break;
-      case 4:
-        ledMatrix->ledOn(5,5);
-        switcher = 5;
-        break;
-      case 5:
-        ledMatrix->ledOn(6,6);
-        switcher = 6;
-        break;
-     case 6:
-        ledMatrix->ledOn(7,7);
-        switcher = 7;
-        break;
-     case 7:
-        ledMatrix->ledOn(8,8);
-        switcher = 0;
-        break;
-    }
-    tTime = millis();
-  }
   ledMatrix->draw();
 }
