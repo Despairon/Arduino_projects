@@ -35,6 +35,7 @@ private:
   void       _snakeChangeDir(const Direction&);
   Point      _snakeMove();
   void       _snakeOnEat();
+  void       _spawnTarget();
 public:
   SnakeGame(LedMatrix*);
   ~SnakeGame();

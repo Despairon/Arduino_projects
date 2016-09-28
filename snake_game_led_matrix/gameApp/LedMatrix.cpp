@@ -9,8 +9,12 @@ LedMatrix::LedMatrix()
 
 LedMatrix::~LedMatrix()
 {
-  delete columnRegister;
-  delete rowRegister;
+    if (columnRegister)
+        delete columnRegister;
+    if (rowRegister)
+        delete rowRegister;
+    if (_image)
+        delete[] _image;
 }
 
 void LedMatrix::ledOn(const int &col, const int &row)
