@@ -4,7 +4,7 @@ LedMatrix::LedMatrix()
   for (int i=0; i<8; i++)
     _image[i] = B00000000;
   columnRegister = new ShiftRegister(COL_DATA,COL_LATCH,COL_CLOCK);
-  rowRegister = new ShiftRegister(ROW_DATA,ROW_LATCH,ROW_CLOCK);
+  rowRegister    = new ShiftRegister(ROW_DATA,ROW_LATCH,ROW_CLOCK);
 }
 
 LedMatrix::~LedMatrix()

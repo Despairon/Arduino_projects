@@ -11,10 +11,10 @@ enum GameSpeed
 enum Direction
 {
   DIRECTION_NONE  =  0,
-  DIRECTION_UP    = -1,
-  DIRECTION_DOWN  =  1,
-  DIRECTION_LEFT  = -1,
-  DIRECTION_RIGHT =  1
+  DIRECTION_UP,
+  DIRECTION_DOWN,
+  DIRECTION_LEFT,
+  DIRECTION_RIGHT
 };
 
 struct Point
@@ -28,6 +28,8 @@ class SnakeGame
 private:
   LedMatrix  *_ledMatrix;
   Point      *_snake;
+  Point      *_snakeTail;
+  Point      *_snakeHead;
   Point      _target;
   Direction  _snakeDirection;
   void       _snakeChangeDir(const Direction&);

@@ -1,6 +1,7 @@
 #include "SnakeGame.h"
-LedMatrix *ledMatrix;
-SnakeGame *snakeGame;
+
+static LedMatrix *ledMatrix;
+static SnakeGame *snakeGame;
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void setup() 
 {
