@@ -33,6 +33,11 @@ ShiftRegister::ShiftRegister(const char &dataPin, const char &latchPin, const ch
   closeLatch();
 }
 
+ShiftRegister::~ShiftRegister()
+{
+
+}
+
 void ShiftRegister::openLatch()
 {
   digitalWrite(_latch, LOW);
@@ -119,14 +124,14 @@ void setup()
   ledMatrix = new LedMatrix();
   byte heart[8] = 
   {
-    B00100100,
-    B01011010,
-    B10000001,  
-    B01000010,  
-    B00100100,  
-    B00011000, 
-    B00000000,  
-    B00000000,  
+    B11111111,
+    B10000001,
+    B10100101,
+    B10000001,
+    B10111101,
+    B10100101,
+    B10000001,
+    B11111111,  
   };
   ledMatrix->loadImage(heart);
 }
