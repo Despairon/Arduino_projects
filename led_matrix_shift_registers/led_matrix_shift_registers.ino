@@ -5,6 +5,30 @@ const char ROW_CLOCK = 4;
 const char COL_DATA = 8;
 const char COL_LATCH = 9;
 const char COL_CLOCK = 10;
+
+byte happy[8] =
+{
+    B00111100,
+    B01000010,
+    B10100101,
+    B11000011,
+    B10111101,
+    B10000001,
+    B01000010,
+    B00111100,
+};
+
+byte sad[8] =
+{
+    B00111100,
+    B01000010,
+    B10100101,
+    B10000001,
+    B10111101,
+    B11000011,
+    B01000010,
+    B00111100,
+};
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ShiftRegister
 {
@@ -117,21 +141,26 @@ void setup()
   digitalWrite(ARDUINO_LED, LOW);
   
   ledMatrix = new LedMatrix();
-  byte heart[8] = 
-  {
-    B00100100,
-    B01011010,
-    B10000001,  
-    B01000010,  
-    B00100100,  
-    B00011000, 
-    B00000000,  
-    B00000000,  
-  };
-  ledMatrix->loadImage(heart);
+  ledMatrix->loadImage(happy);
 }
 
 void loop() 
 {
+  static int switcher = 0;
+  static unsigned long dTime = 0;
+  if (millis() - dTime >= 700)
+  {
+      if (switcher == 0)
+      {
+          ledMatrix->loadImage(sad);
+          switcher = 1;
+      }
+      else
+      {
+          ledMatrix->loadImage(happy);
+          switcher = 0;
+      }
+      dTime = millis();
+  }
   ledMatrix->draw();
 }

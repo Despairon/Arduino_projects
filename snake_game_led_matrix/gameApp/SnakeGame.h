@@ -11,10 +11,12 @@ enum GameSpeed
 class SnakeGame
 {
 private:
-  LedMatrix *_ledMatrix;
-  Point     *_target;
-  Snake     *_snake;
-  void       _spawnTarget();
+  LedMatrix   *_ledMatrix;
+  Point       *_target;
+  Snake       *_snake;
+  void         _spawnTarget();
+  static void  _drawSnakePart(const SnakePart&, const void *const);
+  static void  _eraseSnakePart(const SnakePart&, const void *const);
 public:
   SnakeGame(LedMatrix*);
   ~SnakeGame();
