@@ -18,13 +18,16 @@ SnakeGame::~SnakeGame()
 void SnakeGame::_spawnTarget()
 {
     if (!_target)
+    {
         _target = new Point;
-    _target->x = 4;    // TODO: change this shitty hardcode
-    _target->y = 4;
+        _target->x = 4;    // TODO: change this shitty hardcode
+        _target->y = 4;
+    }
 }
 
 void SnakeGame::proceed()
 {
+    _snake->move();
     /*if ((_snakeHead->x == _target.x) && (_snakeHead->y == _target.y))
         _snakeOnEat();
     else
