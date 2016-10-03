@@ -12,6 +12,8 @@ ShiftRegister::ShiftRegister(const char &dataPin, const char &latchPin, const ch
   closeLatch();
 }
 
+ShiftRegister::~ShiftRegister() { }
+
 void ShiftRegister::openLatch()
 {
   digitalWrite(_latch, LOW);

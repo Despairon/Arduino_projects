@@ -1,3 +1,5 @@
+#include "Arduino.h"
+#include <avr/wdt.h>
 const char ARDUINO_LED = 13;
 const char ROW_DATA = 2;
 const char ROW_LATCH = 3;

@@ -15,7 +15,7 @@ void setup()
 void loop() 
 {
     static unsigned long dTime = 0;
-    if ( (millis() - dTime) >= GAME_SPEED_MEDIUM)
+    if ( (millis() - dTime) >= GAME_SPEED_FAST)
     {
         snakeGame->proceed();
         dTime = millis();

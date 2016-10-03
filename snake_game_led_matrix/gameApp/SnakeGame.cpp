@@ -47,13 +47,27 @@ void SnakeGame::_eraseSnakePart(const SnakePart &part, const void *const gameObj
     gameObjCast->_ledMatrix->ledOff(part.coords.x, part.coords.y);
 }
 
+void SnakeGame::gameReboot()
+{
+    wdt_enable(WDTO_15MS);
+    while (1) { }   
+}
+
 void SnakeGame::proceed()
 {
-    Point snakeHead = _snake->move(&SnakeGame::_drawSnakePart, &SnakeGame::_eraseSnakePart, (const void *const)this);
-    if ((snakeHead.x == _target->x) && (snakeHead.y == _target->y))
+    Point snakeHead = _snake->move_AI(*_target, &SnakeGame::_drawSnakePart, &SnakeGame::_eraseSnakePart, (const void *const)this);
+    if (!_snake->biteItself())
     {
-        _snake->eat(*_target);
-        _spawnTarget();
+        if ((snakeHead.x == _target->x) && (snakeHead.y == _target->y))
+        {
+            _snake->eat(*_target);
+            _spawnTarget();
+        }
+    }
+    else
+    {
+        delay(1000);
+        gameReboot();
     }
     if (_target)
         _ledMatrix->ledOn(_target->x, _target->y);

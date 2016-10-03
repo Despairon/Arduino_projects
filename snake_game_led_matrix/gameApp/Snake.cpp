@@ -21,7 +21,8 @@ Snake::~Snake()
 
 void Snake::changeDir(const Direction &newDir)
 {
-    _dir = newDir;
+    if (newDir != _dir)
+        _dir = newDir;
 }
 
 const Point Snake::move(void(*drawFunc)(const SnakePart&, const void *const),
@@ -89,6 +90,65 @@ bool Snake::collidesWith(const Point &point)
     while (currPart != _snakeHead)
     {
         if ( (currPart->coords.x == point.x) && (currPart->coords.y == point.y) )
+            return true;
+        currPart = currPart->nextPart;
+    }
+    return false;
+}
+
+const Point Snake::move_AI(const Point &targetLocation,
+                           void(*drawFunc)(const SnakePart&, const void *const),
+                           void(*eraseFunc)(const SnakePart&, const void *const),
+                           const void *const gameObj)
+{
+    if (_snakeHead->coords.x != targetLocation.x)
+        changeDir(Direction::DIRECTION_RIGHT);
+    else if (_snakeHead->coords.y != targetLocation.y)
+        changeDir(Direction::DIRECTION_DOWN);
+
+    (*eraseFunc)(*_snakeTail, gameObj);
+    SnakePart *currPart = _snakeTail;
+    while (currPart != _snakeHead)
+    {
+        currPart->coords = currPart->nextPart->coords;
+        (*drawFunc)(*currPart, gameObj);
+        currPart = currPart->nextPart;
+    }
+    switch (_dir)
+    {
+    case DIRECTION_UP:
+        _snakeHead->coords.y--;
+        if ((_snakeHead->coords.y) < UPPER_BORDER)
+            _snakeHead->coords.y = LOWER_BORDER;
+        break;
+    case DIRECTION_RIGHT:
+        _snakeHead->coords.x++;
+        if ((_snakeHead->coords.x) > RIGHT_BORDER)
+            _snakeHead->coords.x = LEFT_BORDER;
+        break;
+    case DIRECTION_DOWN:
+        _snakeHead->coords.y++;
+        if ((_snakeHead->coords.y) > LOWER_BORDER)
+            _snakeHead->coords.y = UPPER_BORDER;
+        break;
+    case DIRECTION_LEFT:
+        _snakeHead->coords.x--;
+        if ((_snakeHead->coords.x) < LEFT_BORDER)
+            _snakeHead->coords.x = RIGHT_BORDER;
+        break;
+    default:
+        break;
+    }
+    (*drawFunc)(*_snakeHead, gameObj);
+    return _snakeHead->coords;
+}
+
+bool Snake::biteItself()
+{
+    SnakePart *currPart = _snakeTail;
+    while (currPart != _snakeHead)
+    {
+        if ((currPart->coords.x == _snakeHead->coords.x) && (currPart->coords.y == _snakeHead->coords.y))
             return true;
         currPart = currPart->nextPart;
     }

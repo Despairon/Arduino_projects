@@ -21,6 +21,7 @@ public:
   SnakeGame(LedMatrix*);
   ~SnakeGame();
   void proceed();
+  void gameReboot();
 };
 
 

@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "defines.h"
 class ShiftRegister
 {

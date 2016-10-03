@@ -41,4 +41,9 @@ public:
                      const void *const);
     void        changeDir(const Direction&);
     bool        collidesWith(const Point&);
+    const Point move_AI(const Point&,
+                        void(*drawFunc)(const SnakePart&, const void *const),
+                        void(*eraseFunc)(const SnakePart&, const void *const),
+                        const void *const);
+    bool        biteItself();
 };
