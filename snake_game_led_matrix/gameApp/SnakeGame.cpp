@@ -56,21 +56,16 @@ void SnakeGame::gameReboot()
 void SnakeGame::proceed()
 {
     Point snakeHead = _snake->move_AI(*_target, &SnakeGame::_drawSnakePart, &SnakeGame::_eraseSnakePart, (const void *const)this);
-    if (!_snake->biteItself())
+    if (_snake->biteItself())
     {
-        if ((snakeHead.x == _target->x) && (snakeHead.y == _target->y))
-        {
-            _snake->eat(*_target);
-            _spawnTarget();
-        }
-    }
-    else
-    {
-        delay(1000);
         gameReboot();
+    }
+    if ((snakeHead.x == _target->x) && (snakeHead.y == _target->y))
+    {
+        _snake->eat(*_target);
+        _spawnTarget();
     }
     if (_target)
         _ledMatrix->ledOn(_target->x, _target->y);
-
 }
 
