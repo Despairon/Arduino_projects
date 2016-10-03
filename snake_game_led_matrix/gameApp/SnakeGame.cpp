@@ -25,12 +25,15 @@ void SnakeGame::_spawnTarget()
     if (!_target)
     {
         _target = new Point;
-        if (!_snake->collidesWith(*_target))
+        Point targetLocation;
+        do
         {
-            // TODO: add spawning target at random point code
-        }
-        _target->x = 4;    // TODO: change this shitty hardcode
-        _target->y = 4;
+            targetLocation.x = random(LEFT_BORDER, RIGHT_BORDER + 1);
+            targetLocation.y = random(UPPER_BORDER, LOWER_BORDER + 1);
+        } while (_snake->collidesWith(targetLocation));
+            *_target = targetLocation;
+        /*_target->x = 7;    
+        _target->y = 4;*/
     }
 }
 
@@ -52,7 +55,6 @@ void SnakeGame::proceed()
     if ((snakeHead.x == _target->x) && (snakeHead.y == _target->y))
     {
         _snake->eat(*_target);
-        _ledMatrix->ledOff(_target->x, _target->y);
         _spawnTarget();
     }
     if (_target)

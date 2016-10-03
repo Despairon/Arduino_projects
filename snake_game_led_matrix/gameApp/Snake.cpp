@@ -82,8 +82,15 @@ void Snake::eat(const Point &target)
 
 bool Snake::collidesWith(const Point &point)
 {
-    for (SnakePart *currPart = _snakeTail; currPart <= _snakeHead; currPart++)
-        if (currPart->coords.x == point.x && currPart->coords.y == point.y)
+    SnakePart *currPart = _snakeTail;
+    if ((_snakeHead->coords.x == point.x) && (_snakeHead->coords.y == point.y))
+        return true;
+    else
+    while (currPart != _snakeHead)
+    {
+        if ( (currPart->coords.x == point.x) && (currPart->coords.y == point.y) )
             return true;
+        currPart = currPart->nextPart;
+    }
     return false;
 }

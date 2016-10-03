@@ -7,7 +7,7 @@ void setup()
 {
     pinMode(ARDUINO_LED, OUTPUT);
     digitalWrite(ARDUINO_LED, LOW);
-  
+    randomSeed(analogRead(0));
     ledMatrix = new LedMatrix();
     snakeGame = new SnakeGame(ledMatrix);
 }
