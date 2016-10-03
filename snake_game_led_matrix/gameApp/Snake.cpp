@@ -67,23 +67,23 @@ const Point Snake::move(void(*drawFunc)(const SnakePart&, const void *const),
 
 void Snake::eat(const Point &target)
 {
-    /*unsigned int oldHeadX = _snakeHead->coords.x;
+    unsigned int oldHeadX = _snakeHead->coords.x;
     unsigned int oldHeadY = _snakeHead->coords.y;
     SnakePart *currPart = _snakeTail;
-    while (currPart < _snakeHead)
-        currPart++;
+    while (currPart != _snakeHead)
+        currPart = currPart->nextPart;
     _snakeHead->nextPart = new SnakePart;
     _snakeHead = _snakeHead->nextPart;
     _snakeHead->coords.x = target.x;
     _snakeHead->coords.y = target.y;
     currPart->nextPart->coords.x = oldHeadX;
-    currPart->nextPart->coords.y = oldHeadY;*/
+    currPart->nextPart->coords.y = oldHeadY;
 }
 
 bool Snake::collidesWith(const Point &point)
 {
     SnakePart *currPart = _snakeTail;
-    if ((_snakeHead->coords.x == point.x) && (_snakeHead->coords.y == point.y))
+    if ( (_snakeHead->coords.x == point.x) && (_snakeHead->coords.y == point.y) )
         return true;
     else
     while (currPart != _snakeHead)

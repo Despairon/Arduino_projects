@@ -32,8 +32,6 @@ void SnakeGame::_spawnTarget()
             targetLocation.y = random(UPPER_BORDER, LOWER_BORDER + 1);
         } while (_snake->collidesWith(targetLocation));
             *_target = targetLocation;
-        /*_target->x = 7;    
-        _target->y = 4;*/
     }
 }
 
