@@ -1,5 +1,5 @@
-#include "Ticker.h"
-Ticker *ticker;
+#include "TickerOnLedMatrix.h"
+static Ticker *ticker;
 
 void setup()
 {
@@ -10,7 +10,11 @@ void setup()
 
 void loop()
 {
-
-  
-
+    static unsigned long dTime = 0;
+    if ((millis() - dTime) > SCROLL_SPEED_MEDIUM)
+    {
+        ticker->tick();
+        dTime = millis();
+    }
+    ticker->draw();
 }
