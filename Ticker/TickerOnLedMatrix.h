@@ -1,5 +1,11 @@
 #include "LedMatrix.h"
 
+struct LedMatrixStrip
+{
+    byte image[8];
+    LedMatrixStrip *next;
+};
+
 enum SCROLL_SPEED
 {
     SCROLL_SPEED_NONE   = 0,
@@ -15,8 +21,9 @@ public:
    ~Ticker();
    void draw();
    void tick();
-   void loadImage(byte [][8]);
+   void loadImage(LedMatrixStrip*);
 private:
-    LedMatrix *_ledMatrix;
-    byte       _image[][8];
+    LedMatrix      *_ledMatrix;
+    LedMatrixStrip *_startImage;
+    void            _clearStrip();
 };
