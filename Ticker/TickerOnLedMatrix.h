@@ -8,10 +8,9 @@ struct LedMatrixStrip
 
 enum SCROLL_SPEED
 {
-    SCROLL_SPEED_NONE   = 0,
-    SCROLL_SPEED_SLOW   = 500,
-    SCROLL_SPEED_MEDIUM = 300,
-    SCROLL_SPEED_FAST   = 200
+    SCROLL_SPEED_SLOW   = 300,
+    SCROLL_SPEED_MEDIUM = 200,
+    SCROLL_SPEED_FAST   = 100
 };
 
 class Ticker
@@ -25,5 +24,8 @@ public:
 private:
     LedMatrix      *_ledMatrix;
     LedMatrixStrip *_startImage;
+    LedMatrixStrip *_savedSequence;
     void            _clearStrip();
+    void            _resetSequence();
+    void            _saveSequence();
 };

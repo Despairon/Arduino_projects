@@ -17,6 +17,49 @@ void Ticker::draw()
     _ledMatrix->draw();
 }
 
+void Ticker::_saveSequence()
+{
+    /*if (_startImage)
+    {
+        LedMatrixStrip *currImage = _startImage;
+        LedMatrixStrip *currSequenceImg = _savedSequence;
+        while (currImage)
+        {
+            currSequenceImg = new LedMatrixStrip();
+            for (int i = 0; i < 8; i++)       
+                currSequenceImg->image[i] = currImage->image[i];
+            currImage = currImage->next;
+            currSequenceImg = currSequenceImg->next;
+        }
+        currSequenceImg = new LedMatrixStrip();
+        for (int i = 0; i < 8; i++)
+            currSequenceImg->image[i] = currImage->image[i];
+    }*/
+}
+
+void Ticker::_resetSequence()
+{
+    /*_clearStrip();
+    if (_savedSequence)
+    {
+        LedMatrixStrip *currImage = _startImage;
+        LedMatrixStrip *resetStartImage = currImage;
+        LedMatrixStrip *currSequenceImg = _savedSequence;
+        while (currSequenceImg)
+        {
+            currImage = new LedMatrixStrip();
+            for (int i = 0; i < 8; i++)
+                currImage->image[i] = currSequenceImg->image[i];
+            currImage = currImage->next;
+            currSequenceImg = currSequenceImg->next;
+        }
+        currImage = new LedMatrixStrip();
+        for (int i = 0; i < 8; i++)
+            currImage->image[i] = currSequenceImg->image[i];
+       _startImage = resetStartImage;
+    }*/
+}
+
 void Ticker::tick()
 {
     static LedMatrixStrip *currStripPart = _startImage;
@@ -37,21 +80,16 @@ void Ticker::tick()
     {
         iterator = 0;
         if (currStripPart->next)
-        {
-            /*for (int i = 0; i < 8; i++)
-                currStripPart->next->image[i] |= imageToDraw[i];*/
             currStripPart = currStripPart->next;
-        }
         else
-        {
-            currStripPart = _startImage;
-            for (int i = 0; i < 8; i++)
-                imageToDraw[i] = B00000000;
-        }
+            _resetSequence();
     }
-
+     
     for (int i = 0; i < 8; i++)
-        imageToDraw[i] = currStripPart->image[i] >> (7 - iterator);   
+    {
+        imageToDraw[i] = (imageToDraw[i] << 1) | (currStripPart->image[i] >> 7);
+        currStripPart->image[i] = currStripPart->image[i] << 1;
+    }
     iterator++;
     
     _ledMatrix->loadImage(imageToDraw);    
@@ -60,6 +98,7 @@ void Ticker::tick()
 void Ticker::loadImage(LedMatrixStrip *startImage)
 {
     _startImage = startImage;
+    _saveSequence();
 }
 
 void Ticker::_clearStrip()
