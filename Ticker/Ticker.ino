@@ -15,7 +15,7 @@ void setup()
     strip->image[5] = B11000000;
     strip->image[6] = B11111111;
     strip->image[7] = B11111111;
-    /*strip->next = new LedMatrixStrip();
+    strip->next = new LedMatrixStrip();
     strip->next->image[0] = B00000000;
     strip->next->image[1] = B00000000;
     strip->next->image[2] = B00000000;
@@ -23,7 +23,7 @@ void setup()
     strip->next->image[4] = B00000000;
     strip->next->image[5] = B00000000;
     strip->next->image[6] = B00000000;
-    strip->next->image[7] = B00000000;*/
+    strip->next->image[7] = B00000000;
     ticker->loadImage(strip);
 }
 

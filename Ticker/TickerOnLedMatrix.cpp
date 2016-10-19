@@ -20,7 +20,6 @@ void Ticker::draw()
 void Ticker::tick()
 {
     static LedMatrixStrip *currStripPart = _startImage;
-    static const byte COPYING_BIT = B10000000;
     static uint8_t iterator = 0;
     static byte imageToDraw[8] = 
     {
@@ -38,7 +37,11 @@ void Ticker::tick()
     {
         iterator = 0;
         if (currStripPart->next)
+        {
+            /*for (int i = 0; i < 8; i++)
+                currStripPart->next->image[i] |= imageToDraw[i];*/
             currStripPart = currStripPart->next;
+        }
         else
         {
             currStripPart = _startImage;
@@ -48,9 +51,7 @@ void Ticker::tick()
     }
 
     for (int i = 0; i < 8; i++)
-    {
-        imageToDraw[i] |= (COPYING_BIT >> iterator) & (currStripPart->image[i]);
-    }     
+        imageToDraw[i] = currStripPart->image[i] >> (7 - iterator);   
     iterator++;
     
     _ledMatrix->loadImage(imageToDraw);    
