@@ -17,49 +17,6 @@ void Ticker::draw()
     _ledMatrix->draw();
 }
 
-void Ticker::_saveSequence()
-{
-    /*if (_startImage)
-    {
-        LedMatrixStrip *currImage = _startImage;
-        LedMatrixStrip *currSequenceImg = _savedSequence;
-        while (currImage)
-        {
-            currSequenceImg = new LedMatrixStrip();
-            for (int i = 0; i < 8; i++)       
-                currSequenceImg->image[i] = currImage->image[i];
-            currImage = currImage->next;
-            currSequenceImg = currSequenceImg->next;
-        }
-        currSequenceImg = new LedMatrixStrip();
-        for (int i = 0; i < 8; i++)
-            currSequenceImg->image[i] = currImage->image[i];
-    }*/
-}
-
-void Ticker::_resetSequence()
-{
-    /*_clearStrip();
-    if (_savedSequence)
-    {
-        LedMatrixStrip *currImage = _startImage;
-        LedMatrixStrip *resetStartImage = currImage;
-        LedMatrixStrip *currSequenceImg = _savedSequence;
-        while (currSequenceImg)
-        {
-            currImage = new LedMatrixStrip();
-            for (int i = 0; i < 8; i++)
-                currImage->image[i] = currSequenceImg->image[i];
-            currImage = currImage->next;
-            currSequenceImg = currSequenceImg->next;
-        }
-        currImage = new LedMatrixStrip();
-        for (int i = 0; i < 8; i++)
-            currImage->image[i] = currSequenceImg->image[i];
-       _startImage = resetStartImage;
-    }*/
-}
-
 void Ticker::tick()
 {
     static LedMatrixStrip *currStripPart = _startImage;
@@ -82,7 +39,11 @@ void Ticker::tick()
         if (currStripPart->next)
             currStripPart = currStripPart->next;
         else
-            _resetSequence();
+        {
+            // reboot board
+            wdt_enable(WDTO_15MS);
+            while (1) {}
+        }
     }
      
     for (int i = 0; i < 8; i++)
@@ -98,7 +59,6 @@ void Ticker::tick()
 void Ticker::loadImage(LedMatrixStrip *startImage)
 {
     _startImage = startImage;
-    _saveSequence();
 }
 
 void Ticker::_clearStrip()
