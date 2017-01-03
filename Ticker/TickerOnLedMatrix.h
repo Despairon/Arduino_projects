@@ -26,4 +26,7 @@ private:
     LedMatrixStrip *_startImage;
     LedMatrixStrip *_savedSequence;
     void            _clearStrip();
+    void            _reset();
+    void            _saveSequence();
+    bool            _isImageLoaded;
 };

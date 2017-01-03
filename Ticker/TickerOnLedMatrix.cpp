@@ -3,6 +3,7 @@
 Ticker::Ticker()
 {
     _ledMatrix = new LedMatrix();
+    _isImageLoaded = false;
 }
 
 Ticker::~Ticker() 
@@ -39,11 +40,7 @@ void Ticker::tick()
         if (currStripPart->next)
             currStripPart = currStripPart->next;
         else
-        {
-            // reboot board
-            wdt_enable(WDTO_15MS);
-            while (1) {}
-        }
+            _reset();
     }
      
     for (int i = 0; i < 8; i++)
@@ -58,7 +55,30 @@ void Ticker::tick()
 
 void Ticker::loadImage(LedMatrixStrip *startImage)
 {
-    _startImage = startImage;
+    _startImage    = new LedMatrixStrip();
+    LedMatrixStrip *startNode = _startImage;
+    LedMatrixStrip *node = startImage;
+    
+    while (node)
+    {
+        for (int i=0; i < 8; i++)
+            _startImage->image[i] = node->image[i];
+
+        if (node->next)
+        {
+            _startImage->next = new LedMatrixStrip();
+            _startImage = _startImage->next;
+        }
+
+        node = node->next;
+    }
+    
+    _startImage = startNode;
+    
+    if (!_isImageLoaded)
+        _saveSequence();
+
+    _isImageLoaded = true;
 }
 
 void Ticker::_clearStrip()
@@ -75,4 +95,15 @@ void Ticker::_clearStrip()
         }
         delete currImage;
     }
+}
+
+void Ticker::_reset()
+{
+    _clearStrip();
+    loadImage(_savedSequence);
+}
+
+void Ticker::_saveSequence()
+{
+    
 }
