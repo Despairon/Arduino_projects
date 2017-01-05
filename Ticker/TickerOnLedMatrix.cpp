@@ -4,13 +4,16 @@ Ticker::Ticker()
 {
     _ledMatrix = new LedMatrix();
     _isImageLoaded = false;
+    _savedSequence = new LedMatrixStrip();
+    _startImage = new LedMatrixStrip();
 }
 
-Ticker::~Ticker() 
+Ticker::~Ticker()
 {
     if (_ledMatrix)
         delete _ledMatrix;
-    _clearStrip();
+    if (_startImage)
+        _clearStrip();
 }
 
 void Ticker::draw()
@@ -20,90 +23,85 @@ void Ticker::draw()
 
 void Ticker::tick()
 {
-    static LedMatrixStrip *currStripPart = _startImage;
-    static uint8_t iterator = 0;
-    static byte imageToDraw[8] = 
-    {
-        B00000000,
-        B00000000,
-        B00000000,
-        B00000000,
-        B00000000,
-        B00000000,
-        B00000000,
-        B00000000
-    };
+    static LedMatrixStrip *currImage = _startImage;
+    static uint8_t rowsPassed = 0;
+    static byte imageToDraw[8] = { 0 };
 
-    if (iterator > 8)
+    if (rowsPassed > 8)
     {
-        iterator = 0;
-        if (currStripPart->next)
-            currStripPart = currStripPart->next;
+        rowsPassed = 0;
+        if (currImage->next)
+            currImage = currImage->next;
         else
+        {
             _reset();
+            currImage = _startImage;
+        }
     }
-     
+
     for (int i = 0; i < 8; i++)
     {
-        imageToDraw[i] = (imageToDraw[i] << 1) | (currStripPart->image[i] >> 7);
-        currStripPart->image[i] = currStripPart->image[i] << 1;
+        imageToDraw[i] = (imageToDraw[i] << 1) | (currImage->image[i] >> 7);
+        currImage->image[i] = currImage->image[i] << 1;
     }
-    iterator++;
     
-    _ledMatrix->loadImage(imageToDraw);    
+    rowsPassed++;
+
+    _ledMatrix->loadImage(imageToDraw);
 }
 
 void Ticker::loadImage(LedMatrixStrip *startImage)
 {
-    _startImage    = new LedMatrixStrip();
-    LedMatrixStrip *startNode = _startImage;
-    LedMatrixStrip *node = startImage;
-    
-    while (node)
-    {
-        for (int i=0; i < 8; i++)
-            _startImage->image[i] = node->image[i];
+    _copyImage(startImage, _startImage);
 
-        if (node->next)
-        {
-            _startImage->next = new LedMatrixStrip();
-            _startImage = _startImage->next;
-        }
-
-        node = node->next;
-    }
-    
-    _startImage = startNode;
-    
     if (!_isImageLoaded)
         _saveSequence();
-
-    _isImageLoaded = true;
 }
 
 void Ticker::_clearStrip()
 {
     if (_startImage)
     {
-        LedMatrixStrip *lastImage;
-        LedMatrixStrip *currImage = _startImage;
-        while (currImage)
+        LedMatrixStrip *node = _startImage;
+        while(node)
         {
-            lastImage = currImage;
-            currImage = currImage->next;
-            delete lastImage;
+            delete node;
+            node = node->next;
         }
-        delete currImage;
     }
 }
 
 void Ticker::_reset()
 {
-    _clearStrip();
     loadImage(_savedSequence);
+}
+
+void Ticker::_copyImage(LedMatrixStrip *source, LedMatrixStrip *destination)
+{
+    if (source)
+    {
+        LedMatrixStrip *destinationNode = destination;
+        LedMatrixStrip *sourceNode = source;
+        LedMatrixStrip *lastNode = destinationNode;
+        while (sourceNode)
+        {
+            if (!destinationNode)
+            {
+                destinationNode = new LedMatrixStrip();
+                lastNode->next = destinationNode;
+            }
+              
+            memcpy(destinationNode->image, sourceNode->image, sizeof(sourceNode->image));
+
+            lastNode = destinationNode;
+            sourceNode = sourceNode->next;
+            destinationNode = destinationNode->next;
+        }
+     }
 }
 
 void Ticker::_saveSequence()
 {
-    
+    _copyImage(_startImage, _savedSequence);
+    _isImageLoaded = true;
 }
