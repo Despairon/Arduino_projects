@@ -1,10 +1,4 @@
-#include "LedMatrix.h"
-
-struct LedMatrixStrip
-{
-    byte image[8];
-    LedMatrixStrip *next;
-};
+#include "LedStringManager.h"
 
 enum SCROLL_SPEED
 {

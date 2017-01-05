@@ -16,15 +16,15 @@ ShiftRegister::~ShiftRegister() { }
 
 void ShiftRegister::openLatch()
 {
-  digitalWrite(_latch, LOW);
+    digitalWrite(_latch, LOW);
 }
 
 void ShiftRegister::closeLatch()
 {
-  digitalWrite(_latch, HIGH);
+    digitalWrite(_latch, HIGH);
 }
 
 void ShiftRegister::sendOutput(const byte &output)
 {
-  shiftOut(_data, _clock, LSBFIRST, output);
+    shiftOut(_data, _clock, LSBFIRST, output);
 }

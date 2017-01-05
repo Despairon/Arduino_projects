@@ -1,4 +1,5 @@
 #include "TickerOnLedMatrix.h"
+
 static Ticker *ticker;
 
 void setup()
@@ -71,5 +72,7 @@ void loop()
         ticker->tick();
         dTime = millis();
     }
+
     ticker->draw();
+    
 }
