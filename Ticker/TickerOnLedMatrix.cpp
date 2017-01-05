@@ -63,10 +63,12 @@ void Ticker::_clearStrip()
     if (_startImage)
     {
         LedMatrixStrip *node = _startImage;
+        LedMatrixStrip **lastNode = &node;
         while(node)
         {
-            delete node;
             node = node->next;
+            delete *lastNode;
+            lastNode = &node;
         }
     }
 }

@@ -8,9 +8,9 @@ struct LedMatrixStrip
 
 enum SCROLL_SPEED
 {
-    SCROLL_SPEED_SLOW   = 240,
-    SCROLL_SPEED_MEDIUM = 160,
-    SCROLL_SPEED_FAST   = 80
+    SCROLL_SPEED_SLOW   = 190,
+    SCROLL_SPEED_MEDIUM = 140,
+    SCROLL_SPEED_FAST   = 70
 };
 
 class Ticker
