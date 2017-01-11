@@ -4,6 +4,8 @@ static Ticker *ticker;
 
 void setup()
 {
+    Serial.begin(9600);
+
     pinMode(ARDUINO_LED, OUTPUT);
     digitalWrite(ARDUINO_LED,LOW);
     ticker = new Ticker("luxoft ");
@@ -12,6 +14,7 @@ void setup()
 void loop()
 {
     static unsigned long dTime = 0;
+
     if ((millis() - dTime) > SCROLL_SPEED_FAST)
     {
         ticker->tick();
@@ -19,5 +22,4 @@ void loop()
     }
 
     ticker->draw();
-    
 }

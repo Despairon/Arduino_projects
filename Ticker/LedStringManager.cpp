@@ -21,40 +21,42 @@ LedMatrixStrip::~LedMatrixStrip() {}
 
 LedStringManager::LedStringManager()
 {
-    _start       = nullptr;
-    _end         = nullptr;
-    _start->next = _end;
-    _end->next   = nullptr;
-    strip = _start;
+    _start = nullptr;
+    _end = nullptr;
 }
 
 LedStringManager::~LedStringManager()
 {
-    for (_start; _start != _end; _start++)
-        delete _start;
+    for (LedMatrixStrip **node = &_start; *node; *node = (*node)->next)
+        delete *node;
 }
 
 bool LedStringManager::loadStr(const char *str)
 {
     const char *currLetter = str;
-    const LedMatrixStrip *currNode = _start;
+    LedMatrixStrip *currNode = new LedMatrixStrip(*currLetter);
+    LedMatrixStrip *lastNode = currNode;
+    _start = currNode;
+    currNode = currNode->next;
     
-    while (currLetter++)
+    while (*(currLetter++) != '\0')
     {
-        if (currNode)
-        {
-            delete currNode;
-            currNode = nullptr;
-        }
-
         currNode = new LedMatrixStrip(*currLetter);
+        lastNode->next = currNode;
+
         if (currNode->image == NULL)
-        {   
+        {
             delete this;
             return false;
         }
+
+        lastNode = currNode;
         currNode = currNode->next;
     }
     
+    _end = currNode;
+
+    strip = _start;
+
     return true;
 }
