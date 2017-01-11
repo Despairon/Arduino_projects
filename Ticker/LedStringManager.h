@@ -1,6 +1,5 @@
 #pragma once
 #include "LedMatrix.h"
-#include "ASCII_8x8_BitMap.h"
 
 struct LedMatrixStrip
 {
@@ -10,4 +9,16 @@ struct LedMatrixStrip
     LedMatrixStrip(const uint8_t&);
     LedMatrixStrip(byte []);
     ~LedMatrixStrip();
+};
+
+class LedStringManager
+{
+private:
+    LedMatrixStrip *_start;
+    LedMatrixStrip *_end;
+public:
+    LedStringManager();
+   ~LedStringManager();
+   bool loadStr(const char*);
+   LedMatrixStrip *strip;
 };

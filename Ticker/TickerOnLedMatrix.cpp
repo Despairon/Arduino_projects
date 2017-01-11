@@ -1,19 +1,20 @@
 #include "TickerOnLedMatrix.h"
 
-Ticker::Ticker()
+Ticker::Ticker(const char *str)
 {
     _ledMatrix = new LedMatrix();
-    _isImageLoaded = false;
-    _savedSequence = new LedMatrixStrip();
-    _startImage = new LedMatrixStrip();
+    _strMgr = new LedStringManager();
+    strcpy(_savedSequence, str);
+    _strMgr->loadStr(str);
+    _startImage = _strMgr->strip;
 }
 
 Ticker::~Ticker()
 {
     if (_ledMatrix)
         delete _ledMatrix;
-    if (_startImage)
-        _clearStrip();
+    if (_strMgr)
+        delete _strMgr;
 }
 
 void Ticker::draw()
@@ -47,63 +48,10 @@ void Ticker::tick()
     
     rowsPassed++;
 
-    _ledMatrix->loadImage(imageToDraw);
-}
-
-void Ticker::loadImage(LedMatrixStrip *startImage)
-{
-    _copyImage(startImage, _startImage);
-
-    if (!_isImageLoaded)
-        _saveSequence();
-}
-
-void Ticker::_clearStrip()
-{
-    if (_startImage)
-    {
-        LedMatrixStrip *node = _startImage;
-        LedMatrixStrip **lastNode = &node;
-        while(node)
-        {
-            node = node->next;
-            delete *lastNode;
-            lastNode = &node;
-        }
-    }
 }
 
 void Ticker::_reset()
 {
-    loadImage(_savedSequence);
-}
-
-void Ticker::_copyImage(LedMatrixStrip *source, LedMatrixStrip *destination)
-{
-    if (source)
-    {
-        LedMatrixStrip *destinationNode = destination;
-        LedMatrixStrip *sourceNode = source;
-        LedMatrixStrip *lastNode = destinationNode;
-        while (sourceNode)
-        {
-            if (!destinationNode)
-            {
-                destinationNode = new LedMatrixStrip();
-                lastNode->next = destinationNode;
-            }
-              
-            memcpy(destinationNode->image, sourceNode->image, sizeof(sourceNode->image));
-
-            lastNode = destinationNode;
-            sourceNode = sourceNode->next;
-            destinationNode = destinationNode->next;
-        }
-     }
-}
-
-void Ticker::_saveSequence()
-{
-    _copyImage(_startImage, _savedSequence);
-    _isImageLoaded = true;
+    _strMgr->loadStr(_savedSequence);
+    _startImage = _strMgr->strip;
 }

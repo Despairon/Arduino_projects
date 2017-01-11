@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Arduino.h"
 #include <avr/wdt.h>
 const uint8_t ARDUINO_LED = 13;

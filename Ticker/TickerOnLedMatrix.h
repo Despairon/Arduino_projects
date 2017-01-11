@@ -10,18 +10,14 @@ enum SCROLL_SPEED
 class Ticker
 {
 public:
-    Ticker();
+    Ticker(const char*);
    ~Ticker();
    void draw();
    void tick();
-   void loadImage(LedMatrixStrip*);
 private:
-    LedMatrix      *_ledMatrix;
-    LedMatrixStrip *_startImage;
-    LedMatrixStrip *_savedSequence;
-    void            _clearStrip();
-    void            _reset();
-    void            _saveSequence();
-    void            _copyImage(LedMatrixStrip*, LedMatrixStrip*);
-    bool            _isImageLoaded;
+    LedMatrix        *_ledMatrix;
+    LedMatrixStrip   *_startImage;
+    LedStringManager *_strMgr;
+    char             *_savedSequence;
+    void              _reset();
 };
