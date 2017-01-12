@@ -8,7 +8,7 @@ void setup()
 
     pinMode(ARDUINO_LED, OUTPUT);
     digitalWrite(ARDUINO_LED,LOW);
-    ticker = new Ticker("luxoft ");
+    ticker = new Ticker("luxoft\0");
 }
 
 void loop()

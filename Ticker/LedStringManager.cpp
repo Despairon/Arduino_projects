@@ -39,18 +39,12 @@ bool LedStringManager::loadStr(const char *str)
     _start = currNode;
     currNode = currNode->next;
     
-    while (*(currLetter++) != '\0')
+    while (*currLetter++)
     {
         currNode = new LedMatrixStrip(*currLetter);
         lastNode->next = currNode;
 
-        if (currNode->image == NULL)
-        {
-            delete this;
-            return false;
-        }
-
-        lastNode = currNode;
+        lastNode = lastNode->next;
         currNode = currNode->next;
     }
     

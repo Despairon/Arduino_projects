@@ -4,6 +4,7 @@ Ticker::Ticker(const char *str)
 {
     _ledMatrix = new LedMatrix();
     _strMgr = new LedStringManager();
+    _savedSequence = new char[MAX_STRLEN];
     strcpy(_savedSequence, str);
     if (_strMgr->loadStr(str))
         _startImage = _strMgr->strip;
@@ -49,6 +50,8 @@ void Ticker::tick()
     }
     
     rowsPassed++;
+
+    _ledMatrix->loadImage(imageToDraw);
 }
 
 void Ticker::_reset()
